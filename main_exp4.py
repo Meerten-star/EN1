@@ -47,8 +47,6 @@ class DataLists:
     def getTemperatureList(self):
         return self.temperature
 
-    def getTemperature(self, avg, dev):
-        return self.rToTemp(avg), self.rDevToTempDev(avg, dev)
 
     def __str__(self):
         return (f"file: {self.filename}\n"
@@ -56,6 +54,10 @@ class DataLists:
                 f"ybco: {self.R_YBCO}\n"
                 f"pt100: {self.R_PT100}\n"
                 f"temp: {self.temperature}")
+
+    @staticmethod
+    def getTemperature(avg, dev):
+        return DataLists.rToTemp(avg), DataLists.rDevToTempDev(avg, dev)
 
     @staticmethod
     def rToTemp(r):
@@ -176,8 +178,10 @@ class Selection:
 
 
     def deviationDMM(self, avg, dev): # add deviation of measurement tools; dmm, pt100 accuracy
-        dev_dmm = 0.035 / 100 * avg
-        return DataLists.addDev(dev, dev_dmm)
+        dev_dmm = 0.035 / 100 * avg # 0.035% afwijking
+        dev_pt100 = 0.56 # Ohm afwijking
+        extra_dev = DataLists.addDev(dev_dmm, dev_pt100)
+        return DataLists.addDev(dev, extra_dev)
 
     def ybcoToTemp(self, avg_ybco, dev_ybco):
         avg_pt100, dev_pt100 = self.ybcoToPt100(avg_ybco, dev_ybco)
