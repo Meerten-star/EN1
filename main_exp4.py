@@ -93,7 +93,7 @@ class Selection:
 
             if self.domain[0] != 0:
                 self.calcTransitiebreedte()
-                print(self.__str__())
+                print("\n" + self.__str__())
                 fig_txt.set_text(self.__str__())
 
             fig.canvas.draw_idle()
@@ -234,6 +234,5 @@ class Selection:
 data = DataLists("measured_data_exp4/test_data.csv")
 print(data)
 selection = Selection(data)
-print(selection)
 
 
