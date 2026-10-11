@@ -167,21 +167,21 @@ class Selection:
 
     # calculate average and standard deviation of local area around point
     def localDeviation(self, index):
-        # local: 5 before, 5 after?
-        local = 5
+        # local: 10 before, 10 after?
+        local = 10
         sliced_ybco = self.data.getYBCOList()[index - local:index + local]
         avg = sum(sliced_ybco) / len(sliced_ybco)
         dev = statistics.stdev(sliced_ybco)
         return avg, dev
 
 
-    def deviationDMM(self, dev): # add deviation of measurement tools; dmm, pt100 accuracy
-        dev_dmm = 0.035
+    def deviationDMM(self, avg, dev): # add deviation of measurement tools; dmm, pt100 accuracy
+        dev_dmm = 0.035 / 100 * avg
         return DataLists.addDev(dev, dev_dmm)
 
     def ybcoToTemp(self, avg_ybco, dev_ybco):
         avg_pt100, dev_pt100 = self.ybcoToPt100(avg_ybco, dev_ybco)
-        dev_pt100 = self.deviationDMM(dev_pt100)
+        dev_pt100 = self.deviationDMM(avg_pt100, dev_pt100)
         avg_temp = DataLists.rToTemp(avg_pt100)
         dev_temp = DataLists.rDevToTempDev(avg_pt100, dev_pt100)
         return avg_temp, dev_temp
