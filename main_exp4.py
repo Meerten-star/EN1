@@ -29,8 +29,8 @@ class DataLists:
         while line:
             data_points = line.strip().split(",")
             t = int(data_points[0].translate(removeDotsMap)) * 10**(-15)
-            y = float(data_points[1])
-            r = int(data_points[2].translate(removeDotsMap)) * 10**(-15)
+            r = float(data_points[1])
+            y = int(data_points[2].translate(removeDotsMap)) * 10**(-15)
             self.time.append(t)
             self.R_YBCO.append(y)
             self.R_PT100.append(r)
@@ -145,7 +145,7 @@ class Selection:
             RangeSlider(plt.axes((0.1, 0.06 + 0.06, 0.7, 0.03)), sliderLabels[0], 75, 90,
                     valstep=x_temp, handle_style=dict(size=12)))
         sliders.append(
-            RangeSlider(plt.axes((0.1, 0.06, 0.7, 0.03)), sliderLabels[1], 0, 1,
+            RangeSlider(plt.axes((0.1, 0.06, 0.7, 0.03)), sliderLabels[1], -10, 90,
                     valstep=y_ybco, handle_style=dict(size=12)))
 
         # Call update function when slider value is changed
@@ -234,8 +234,10 @@ class Selection:
                 f"Transitiebreedte:\n"
                 f"{round(self.transitiebreedte[0],d)} +- {round(self.transitiebreedte[1],d)} K; ")
 
-
-data = DataLists("measured_data_exp4/test_data.csv")
+path = "measured_data_exp4/test_data.csv"
+path = "measured_data_exp4/afkoel2.csv"
+#path = "measured_data_exp4/opwarmenX3.csv"
+data = DataLists(path)
 print(data)
 selection = Selection(data)
 
